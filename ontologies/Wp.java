@@ -299,5 +299,11 @@ public class Wp {
     public static final Resource University = m_model.createResource( "http://vocabularies.wikipathways.org/wp#Maastricht%20University" );
     
     public static final Resource andra = m_model.createResource( "http://vocabularies.wikipathways.org/wp#andra" );
-    
+
+    /** State := Biological modification type. suggested values: Phosphorylated, Glycosylated, Activated, ... **/
+    public static final Resource UnknownState = m_model.createResource( "http://vocabularies.wikipathways.org/wp#UnknownState" );
+    public static final Resource PhosphorylatedState = m_model.createResource( "http://vocabularies.wikipathways.org/wp#PhosphorylatedState" );
+    public static final Resource GlycosylatedState = m_model.createResource( "http://vocabularies.wikipathways.org/wp#GlycosylatedState" );
+    public static final Resource ActivatedState = m_model.createResource( "http://vocabularies.wikipathways.org/wp#ActivatedState" );
+
 }

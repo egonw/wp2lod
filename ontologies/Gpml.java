@@ -194,7 +194,7 @@ public class Gpml {
     
     /** <p>An interaction defines the relationship between the two datanodes it connects.</p> */
     public static final Resource Interaction = m_model.createResource( "http://vocabularies.wikipathways.org/gpml#Interaction" );
-    
+
     /** <p>A label is a text box which can be used to describe the elements of a pathway. 
      *  It is mostly used as a name tag, to describe datanodes, interactions or cellular 
      *  compartments in a pathway.</p>
