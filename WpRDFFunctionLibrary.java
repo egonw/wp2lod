@@ -767,22 +767,46 @@ public class WpRDFFunctionLibrary {
 		if (stateNode.getAttributes().getNamedItem("GraphId")==null){
 			stateResource.addProperty(RDF.type, Gpml.requiresCurationAttention);
 		}
+		if (stateNode.getAttributes().getNamedItem("GraphRef")!=null){
+			String graphRef = stateNode.getAttributes().getNamedItem("GraphRef").getTextContent().trim();
+			stateResource.addLiteral(Gpml.graphref, graphRef);
+		}
 		stateResource.addProperty(DCTerms.isPartOf, pwResource);
 		stateResource.addProperty(RDF.type, Gpml.State);
 		String textLabel = stateNode.getAttributes().getNamedItem("TextLabel").getTextContent().trim();
 		stateResource.addLiteral(RDFS.label, textLabel);
-		if (stateNode.getAttributes().getNamedItem("Type") != null){ 
-			String dataNodeType = stateNode.getAttributes().getNamedItem("Type").getTextContent().trim();
-			if (dataNodeType == null || dataNodeType.equals("")){
-				stateResource.addProperty(RDF.type, Wp.UnknownState);
-			} else if (dataNodeType.equals("Unknown")){
-				stateResource.addProperty(RDF.type, Wp.UnknownState);
-			} else if (dataNodeType.equals("PhosphorylatedState")){
-				stateResource.addProperty(RDF.type, Wp.PhosphorylatedState);
-			} else if (dataNodeType.equals("GlycosylatedState")){
-				stateResource.addProperty(RDF.type, Wp.GlycosylatedState);
-			} else if (dataNodeType.equals("ActivatedState")){
-				stateResource.addProperty(RDF.type, Wp.ActivatedState);
+		String dataNodeType = stateNode.getAttributes().getNamedItem("Type").getTextContent().trim();
+		if (dataNodeType == null || dataNodeType.equals("")){
+			stateResource.addProperty(RDF.type, Wp.UnknownState);
+		} else if (dataNodeType.equals("Unknown")){
+			stateResource.addProperty(RDF.type, Wp.UnknownState);
+		} else if (dataNodeType.equals("PhosphorylatedState")){
+			stateResource.addProperty(RDF.type, Wp.PhosphorylatedState);
+		} else if (dataNodeType.equals("GlycosylatedState")){
+			stateResource.addProperty(RDF.type, Wp.GlycosylatedState);
+		} else if (dataNodeType.equals("ActivatedState")){
+			stateResource.addProperty(RDF.type, Wp.ActivatedState);
+		}
+		NodeList lineGraphics = ((Element)stateNode).getElementsByTagName("Graphics");
+		if (lineGraphics.getLength() > 0) {
+			Node graphicsNode = lineGraphics.item(0);
+			if ((graphicsNode.getAttributes().getNamedItem("RelX") != null) && 
+			    (graphicsNode.getAttributes().getNamedItem("RelY") != null)) {
+				Float x = Float.valueOf(graphicsNode.getAttributes().getNamedItem("RelX").getTextContent().trim());
+				Float y = Float.valueOf(graphicsNode.getAttributes().getNamedItem("RelY").getTextContent().trim());
+				stateResource.addLiteral(Gpml.relX, x);
+				stateResource.addLiteral(Gpml.relY, y);
+			}
+			if ((graphicsNode.getAttributes().getNamedItem("Width") != null) && 
+			    (graphicsNode.getAttributes().getNamedItem("Height") != null)) {
+				Float w = Float.valueOf(graphicsNode.getAttributes().getNamedItem("Width").getTextContent().trim());
+				Float h = Float.valueOf(graphicsNode.getAttributes().getNamedItem("Height").getTextContent().trim());
+				stateResource.addLiteral(Gpml.width, w);
+				stateResource.addLiteral(Gpml.height, h);
+			}
+			if ((graphicsNode.getAttributes().getNamedItem("FillColor") != null)) {
+				String color = graphicsNode.getAttributes().getNamedItem("FillColor").getTextContent().trim();
+				stateResource.addLiteral(Gpml.fillcolor, color);
 			}
 		}
 	}
