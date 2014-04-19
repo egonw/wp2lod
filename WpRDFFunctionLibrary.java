@@ -760,6 +760,37 @@ public class WpRDFFunctionLibrary {
 		}
 	}
 
+	public static void addStateTriples(Model model, Resource pwResource, Node stateNode, String wpId, String revId){
+		// Make Line Resource
+		String graphId = String.valueOf(UUID.randomUUID()); //No graphRef set.
+		if (stateNode.getAttributes().getNamedItem("GraphId")!=null){
+			graphId = stateNode.getAttributes().getNamedItem("GraphId").getTextContent().trim();
+		}
+		Resource stateResource = model.createResource("http://rdf.wikipathways.org/Pathway/"+wpId+"_r"+revId+"/State/"+graphId);
+		stateResource.addLiteral(Gpml.graphid, graphId);
+		if (stateNode.getAttributes().getNamedItem("GraphId")==null){
+			stateResource.addProperty(RDF.type, Gpml.requiresCurationAttention);
+		}
+		stateResource.addProperty(DCTerms.isPartOf, pwResource);
+		stateResource.addProperty(RDF.type, Gpml.State);
+		String textLabel = stateNode.getAttributes().getNamedItem("TextLabel").getTextContent().trim();
+		stateResource.addLiteral(RDFS.label, textLabel);
+		if (stateNode.getAttributes().getNamedItem("Type") != null){ 
+			String dataNodeType = stateNode.getAttributes().getNamedItem("Type").getTextContent().trim();
+			if (dataNodeType == null || dataNodeType.equals("")){
+				stateResource.addProperty(RDF.type, Wp.UnknownState);
+			} else if (dataNodeType.equals("Unknown")){
+				stateResource.addProperty(RDF.type, Wp.UnknownState);
+			} else if (dataNodeType.equals("PhosphorylatedState")){
+				stateResource.addProperty(RDF.type, Wp.PhosphorylatedState);
+			} else if (dataNodeType.equals("GlycosylatedState")){
+				stateResource.addProperty(RDF.type, Wp.GlycosylatedState);
+			} else if (dataNodeType.equals("ActivatedState")){
+				stateResource.addProperty(RDF.type, Wp.ActivatedState);
+			}
+		}
+	}
+
 	public static void addLabelTriples(Model model, Resource pwResource, Node labelNode, String wpId, String revId){
 		String graphId = "";
 		if (labelNode.getAttributes().getNamedItem("GraphId")!=null){
