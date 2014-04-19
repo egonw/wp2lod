@@ -777,19 +777,25 @@ public class WpRDFFunctionLibrary {
 		}
 		stateResource.addProperty(DCTerms.isPartOf, pwResource);
 		stateResource.addProperty(RDF.type, Gpml.State);
-		String textLabel = stateNode.getAttributes().getNamedItem("TextLabel").getTextContent().trim();
-		stateResource.addLiteral(RDFS.label, textLabel);
-		String dataNodeType = stateNode.getAttributes().getNamedItem("Type").getTextContent().trim();
-		if (dataNodeType == null || dataNodeType.equals("")){
+		if (stateNode.getAttributes().getNamedItem("TextLabel") != null) {
+			String textLabel = stateNode.getAttributes().getNamedItem("TextLabel").getTextContent().trim();
+			stateResource.addLiteral(RDFS.label, textLabel);
+		}
+		if (stateNode.getAttributes().getNamedItem("Type") == null) {
 			stateResource.addProperty(RDF.type, Wp.UnknownState);
-		} else if (dataNodeType.equals("Unknown")){
-			stateResource.addProperty(RDF.type, Wp.UnknownState);
-		} else if (dataNodeType.equals("PhosphorylatedState")){
-			stateResource.addProperty(RDF.type, Wp.PhosphorylatedState);
-		} else if (dataNodeType.equals("GlycosylatedState")){
-			stateResource.addProperty(RDF.type, Wp.GlycosylatedState);
-		} else if (dataNodeType.equals("ActivatedState")){
-			stateResource.addProperty(RDF.type, Wp.ActivatedState);
+		} else {
+			String dataNodeType = stateNode.getAttributes().getNamedItem("Type").getTextContent().trim();
+			if (dataNodeType.equals("")){
+				stateResource.addProperty(RDF.type, Wp.UnknownState);
+			} else if (dataNodeType.equals("Unknown")){
+				stateResource.addProperty(RDF.type, Wp.UnknownState);
+			} else if (dataNodeType.equals("PhosphorylatedState")){
+				stateResource.addProperty(RDF.type, Wp.PhosphorylatedState);
+			} else if (dataNodeType.equals("GlycosylatedState")){
+				stateResource.addProperty(RDF.type, Wp.GlycosylatedState);
+			} else if (dataNodeType.equals("ActivatedState")){
+				stateResource.addProperty(RDF.type, Wp.ActivatedState);
+			}
 		}
 		NodeList lineGraphics = ((Element)stateNode).getElementsByTagName("Graphics");
 		if (lineGraphics.getLength() > 0) {
