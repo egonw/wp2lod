@@ -815,6 +815,14 @@ public class WpRDFFunctionLibrary {
 				stateResource.addLiteral(Gpml.fillcolor, color);
 			}
 		}
+		String dataNodeDataSource = ((Element) stateNode).getElementsByTagName("Xref").item(0).getAttributes().getNamedItem("Database").getTextContent().trim();
+		if ((dataNodeDataSource != "") && (dataNodeDataSource != null)){
+			stateResource.addLiteral(DC.source, dataNodeDataSource);
+		}
+		String dataNodeIdentifier = ((Element) stateNode).getElementsByTagName("Xref").item(0).getAttributes().getNamedItem("ID").getTextContent().trim().replace(" ", "_");
+		if ((dataNodeIdentifier != "") && (dataNodeIdentifier != null)){
+			stateResource.addLiteral(DCTerms.identifier, dataNodeIdentifier);
+		}
 	}
 
 	public static void addLabelTriples(Model model, Resource pwResource, Node labelNode, String wpId, String revId){
