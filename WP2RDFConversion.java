@@ -135,6 +135,12 @@ public class WP2RDFConversion {
 				for (int k=0; k<linesElement.getLength(); k++){
 					WpRDFFunctionLibrary.addLineTriples(pathwayModel, pwResource, linesElement.item(k), wpId, revision);
 				}
+
+				// Get all states
+				NodeList stateElements = ((Element) pathwayElements.item(i)).getElementsByTagName("State");
+				for (int k=0; k<stateElements.getLength(); k++){
+					WpRDFFunctionLibrary.addStateTriples(pathwayModel, pwResource, stateElements.item(k), wpId, revision);
+				}
 				
 				//Get all the labels
 				NodeList labelsElement = ((Element) pathwayElements.item(i)).getElementsByTagName("Label");
