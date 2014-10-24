@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -125,15 +126,16 @@ public class WP2RDFConversion {
 				}
 	
 				// Get all the Datanodes
+				Map<String,Resource> graphrefMap = new HashMap<String,Resource>();
 				NodeList dataNodesElement = ((Element) pathwayElements.item(i)).getElementsByTagName("DataNode");
 				for (int j=0; j<dataNodesElement.getLength(); j++){
-					WpRDFFunctionLibrary.addDataNodeTriples(pathwayModel, pwResource, dataNodesElement.item(j), wpId, revision, bridgeDbmodel, mapper, openPhactsLinkSets);
+					WpRDFFunctionLibrary.addDataNodeTriples(pathwayModel, pwResource, dataNodesElement.item(j), wpId, revision, bridgeDbmodel, mapper, openPhactsLinkSets, graphrefMap);
 				}
 				
 				// Get all the lines
 				NodeList linesElement = ((Element) pathwayElements.item(i)).getElementsByTagName("Interaction");
 				for (int k=0; k<linesElement.getLength(); k++){
-					WpRDFFunctionLibrary.addLineTriples(pathwayModel, pwResource, linesElement.item(k), wpId, revision);
+					WpRDFFunctionLibrary.addLineTriples(pathwayModel, pwResource, linesElement.item(k), wpId, revision, graphrefMap);
 				}
 
 				// Get all states

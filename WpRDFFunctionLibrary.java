@@ -368,7 +368,7 @@ public class WpRDFFunctionLibrary {
 		return pathwayResource;
 	}
 
-	public static void addDataNodeTriples(Model model, Resource pwResource, Node dataNode, String wpId, String revId, Model bridgeDbModel, IDMapper mapper, Model openPhactsLinkSets) throws IOException, IDMapperException{
+	public static void addDataNodeTriples(Model model, Resource pwResource, Node dataNode, String wpId, String revId, Model bridgeDbModel, IDMapper mapper, Model openPhactsLinkSets, Map graphrefMap) throws IOException, IDMapperException{
 		String dataNodeLabel = dataNode.getAttributes().getNamedItem("TextLabel").getTextContent().trim();
 		String dataNodeType="";
 		if (dataNode.getAttributes().getNamedItem("Type") != null){ 
@@ -475,6 +475,7 @@ public class WpRDFFunctionLibrary {
 			}
 
 		}
+		graphrefMap.put(dataNodeGraphId, internalWPDataNodeResource);
 		Xref idXref = new Xref(dataNodeIdentifier, DataSource.getByFullName(dataNodeDataSource));
 		if (dataNodeType != ""){
 			if (dataNodeType.equals("GeneProduct")){
@@ -553,7 +554,7 @@ public class WpRDFFunctionLibrary {
 		internalWPDataNodeResource.addProperty(CHEMINF.CHEMINF_000200, cheminfEncodedIDResource);
 	}
 
-	public static void addLineTriples(Model model, Resource pwResource, Node lineNode, String wpId, String revId){
+	public static void addLineTriples(Model model, Resource pwResource, Node lineNode, String wpId, String revId, graphrefMap){
 		// Make Line Resource
 		String graphId = String.valueOf(UUID.randomUUID()); //No graphRef set.
 		if (lineNode.getAttributes().getNamedItem("GraphId")!=null){
@@ -619,6 +620,12 @@ public class WpRDFFunctionLibrary {
 			if ((graphRef != null) && (graphRef != "" )){
 				lineResource.addLiteral(Gpml.graphref, graphRef);
 				graphRefs.add(graphRef);
+				if (graphrefMap.containsKey(graphRef)) {
+					lineResource.addProperty(
+						"http://vocabularies.wikipathways.org/gpml#graphrefRes",
+						graphrefMap.get(graphRef)
+					);
+				}
 			}
 		}
 		/*if (graphRefs.size() == 2) {
