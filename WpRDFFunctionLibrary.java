@@ -623,7 +623,7 @@ public class WpRDFFunctionLibrary {
 				graphRefs.add(graphRef);
 				if (graphrefMap.containsKey(graphRef)) {
 					lineResource.addProperty(
-						"http://vocabularies.wikipathways.org/gpml#graphrefRes",
+						model.createProperty("http://vocabularies.wikipathways.org/gpml#graphrefRes"),
 						graphrefMap.get(graphRef)
 					);
 				}
