@@ -554,7 +554,7 @@ public class WpRDFFunctionLibrary {
 		internalWPDataNodeResource.addProperty(CHEMINF.CHEMINF_000200, cheminfEncodedIDResource);
 	}
 
-	public static void addLineTriples(Model model, Resource pwResource, Node lineNode, String wpId, String revId, graphrefMap){
+	public static void addLineTriples(Model model, Resource pwResource, Node lineNode, String wpId, String revId, Map graphrefMap){
 		// Make Line Resource
 		String graphId = String.valueOf(UUID.randomUUID()); //No graphRef set.
 		if (lineNode.getAttributes().getNamedItem("GraphId")!=null){
